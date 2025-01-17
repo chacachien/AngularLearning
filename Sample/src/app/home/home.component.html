@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="form">
+    <table mat-table
+           [dataSource]="dataSource"
+           multiTemplateDataRows>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell
+            *matHeaderCellDef>Id
+        </th>
+        <td mat-cell
+            class="row"
+            *matCellDef="let user">{{ user.id }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="username">
+        <th mat-header-cell
+            *matHeaderCellDef> UserName
+        </th>
+        <td mat-cell
+            class="row"
+            *matCellDef="let user">
+          <div>
+
+          {{ user.username }}
+          </div>
+          <div>
+
+          <mat-form-field class="example-chip-list">
+            <mat-chip-list #chiplist aria-label="Fruit selection">
+              <mat-chip
+                *ngFor = "let item of user.items"
+                [selectable]="selectable"
+                [removable]="removeable"
+                (removed) =
+                  "remove(user.id, item)">
+                {{item.STT}}
+              </mat-chip>
+              <input
+                placeholder="Danh sach lo"
+                #itemInput
+                [formControl]="getItemControl(user.id)"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chiplist"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event, user.id)"
+              >
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, user.id)">
+              <mat-option *ngFor="let item of getFilterItems(user.id) | async" [value]="item.STT">
+                {{item.STT}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          </div>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row
+          *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  </div>
+    <div class="content">
+      <div *ngFor="let row of dataSource.data">
+
+      <pre>{{ row | json }}</pre>
+      </div>
+      <pre>{{ userInfo | json }}</pre>
+    </div>
+</div>

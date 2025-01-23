@@ -117,7 +117,6 @@ export class HomeComponent implements OnInit {
       };
       this.dataSource.data.push(userInfo);
     }
-    debugger;
 
   }
   remove(id: number, item: ItemRow): void {
